@@ -13,8 +13,8 @@ There is also an Excel file, "SS_data_collector.xlsx," which contains the key da
 4. You will be prompted to input today's date; this will be used as part of the file names when saving out figures.
 5. Figures will be saved in \snapshot_pilot\reports\figures.
 
-Project Organization: Local (not all files listed below are version controlled or included on GitHub)
-------------
+#### Project Organization: Local (not all files listed below are version controlled or included on GitHub)
+**------------
 
     ├── LICENSE
     ├── README.md         
@@ -26,13 +26,11 @@ Project Organization: Local (not all files listed below are version controlled o
     │				└── Confocal <- Contains data obtained primarily at Leica SP8 Matrix confocal microscope.
     │						Each file represents one slide, with up to 3 slices on the slide. Within the file,
     │						individual acquisitions are named with the slice num (1, 2, or 3) and a letter (1a, 1b, etc.). 
-    │						Optionally,an acquisition name may also include the approximate brain region (1a_cortex, 1b_thal). 
-    │								
+    │						Optionally,an acquisition name may also include the approximate brain region (1a_cortex, 1b_thal).
     │
     ├── methods            <- Notes and protocols used in the experiment. Not git-controlled.
     │
-    ├── notebooks          <- Jupyter notebooks. 
-    │
+    ├── notebooks          <- Jupyter notebooks. Not git-controlled.
     │
     ├── reports            <- Figures, summaries, overviews of the experiment.
     │   └── figures        <- Generated graphics and figures representing the dataset. Generated with code found in src.
@@ -40,25 +38,13 @@ Project Organization: Local (not all files listed below are version controlled o
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
     │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+    └── src                <- Source code for use in this project.
+        │
+        ├── data           <- Scripts to download or generate data (empty for now).
+        │   
+        └── visualization  <- Scripts to create exploratory and results-oriented visualizations
+            └── snapshot_visualization_script.py
+            └── snapshot_visualization_mod.py
 
 
 --------
