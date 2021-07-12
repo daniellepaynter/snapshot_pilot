@@ -14,12 +14,12 @@ There is also an Excel file, "SS_data_collector.xlsx," which contains the key da
 5. Figures will be saved in \snapshot_pilot\reports\figures.
 
 #### Project Organization: Local (not all files listed below are version controlled or included on GitHub)
-**------------
 
     ├── LICENSE
     ├── README.md         
     ├── data               <- Not git-controlled.
-    │   ├── processed      <- Contains one folder per mouse, named with mouse ID. Folder contains a selection of images of brain slices, exported to PNGs or TIFs from .lif files using LAS-X software. 
+    │   ├── processed      <- Contains one folder per mouse, named with mouse ID. Folder contains a selection of images of brain slices, 
+    │   │                     exported to PNGs or TIFs from .lif files using LAS-X software. 
     │   └── raw            <- Contains one folder per mouse, named with the mouse ID.
     │		 └── mouseID
     │				└── Axio <- Not present for all mice. Contains epifluorescence images of slides obtained with AxioImager 
