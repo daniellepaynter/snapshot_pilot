@@ -72,9 +72,12 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
-# exclude data and methods from source control by default
+# exclude data and methods from source control
 /data/
 /methods/
+
+# exclude notebooks, possibly only temporarily
+/notebooks/
 
 # Mac OS-specific storage files
 .DS_Store
