@@ -21,9 +21,9 @@ There is also an Excel file, "SS_data_collector.xlsx," which contains the key da
     │   ├── processed      <- Contains one folder per mouse, named with mouse ID. Folder contains a selection of images of brain slices, 
     │   │                     exported to PNGs or TIFs from .lif files using LAS-X software. 
     │   └── raw            <- Contains one folder per mouse, named with the mouse ID.
-    │		 └── mouseID
-    │				└── Axio <- Not present for all mice. Contains epifluorescence images of slides obtained with AxioImager 
-    │				└── Confocal <- Contains data obtained primarily at Leica SP8 Matrix confocal microscope.
+    │       └── mouseID
+    │	        └── Axio <- Not present for all mice. Contains epifluorescence images of slides obtained with AxioImager 
+    │	    	└── Confocal <- Contains data obtained primarily at Leica SP8 Matrix confocal microscope.
     │						Each file represents one slide, with up to 3 slices on the slide. Within the file,
     │						individual acquisitions are named with the slice num (1, 2, or 3) and a letter (1a, 1b, etc.). 
     │						Optionally,an acquisition name may also include the approximate brain region (1a_cortex, 1b_thal).
