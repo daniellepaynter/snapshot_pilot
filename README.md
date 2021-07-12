@@ -1,32 +1,32 @@
-snapshot_4OHT_pilot
+﻿snapshot_pilot
 ==============================
-
+This repo contains
 Experiments to test 4OHT efficiency in inducing tdTomato expression in RABV+ cells.
+Method files are not version controlled.
 
 Project Organization
 ------------
 
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
+    ├── README.md         
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │   ├── processed      <- Contains one folder per mouse, named with mouse ID. Folder contains a selection of images of brain slices, exported to PNGs or TIFs from .lif files using LAS-X software. 
+    │   └── raw            <- Contains one folder per mouse, named with the mouse ID.
+    │		 └── mouseID
+    │				└── Axio <- Not present for all mice. Contains epifluorescence images of slides obtained with AxioImager 
+    │				└── Confocal <- Contains data obtained primarily at Leica SP8 Matrix confocal microscope.
+    │						Each file represents one slide, with up to 3 slices on the slide. Within the file,
+    │						individual acquisitions are named with the slice num (1, 2, or 3) and a letter (1a, 1b, etc.). 
+    │						Optionally,an acquisition name may also include the approximate brain region (1a_cortex, 1b_thal). 
+    │								
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    ├── methods            <- Notes and protocols used in the experiment. Not git-controlled.
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    ├── notebooks          <- Jupyter notebooks. 
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
     │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
+    ├── reports            <- Figures, summaries, overviews of the experiment.
+    │   └── figures        <- Generated graphics and figures representing the dataset. Generated with code found in src.
     │
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`

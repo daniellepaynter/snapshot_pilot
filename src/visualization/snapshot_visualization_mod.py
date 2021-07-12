@@ -2,9 +2,9 @@
 """
 Created on Wednesday 24 March 2021
 
-Snapshot pilot data processing module.
+Snapshot pilot visualization module.
 
-To be used with the spreadsheet stored at I:\Danielle Paynter\InVivoTTTPilots\snapshot_4OHT_pilot\data\processed\SS_data_collector.xlsx
+To be used with the spreadsheet stored at \snapshot_pilot\SS_data_collector.xlsx
 which contains: list of mice/slides/slices obtained through snapshot pilot experiment, raw cell counts by slice, basic histology info,
 and the 4OHT dosage the mouse received.
 

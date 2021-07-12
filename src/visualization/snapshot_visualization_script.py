@@ -3,41 +3,44 @@
 Created on Wed Mar 24 16:25:27 2021
 
 Snapshot data processing script.
-Uses snapshot_dataproc_mod and the spreadsheet stored at I:\Danielle Paynter\InVivoTTTPilots\snapshot_4OHT_pilot\data\processed\SS_data_collector.xlsx
+Uses snapshot_dataproc_mod and the spreadsheet stored at \snapshot_pilot\SS_data_collector.xlsx,
 which contains: list of mice/slides/slices obtained through snapshot pilot experiment, raw cell counts by slice, basic histology info,
 and the 4OHT dosage the mouse received.
 
-Green = gfp
-Red = tom (tomato)
+Green = gfp (eGFP)
+Red = tom (tdTomato)
 
 @author: dpaynter
 """
-
-import snapshotpilot_dataproc_mod as ssp
-import matplotlib
+## Imports:
+import snapshot_visualization_mod as ssv
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
+import sys, os
 
-datapath = r'I:\Danielle Paynter\InVivoTTTPilots\snapshot_4OHT_pilot\data\processed\SS_data_collector.xlsx'
+date = str(input("What is today's date?"))
+
+ss_dir = os.path.dirname(os.path.dirname(os.getcwd()))
+datapath = ss_dir + r'\SS_data_collector.xlsx'
+savefigpath = ss_dir + r'\reports\figures'
+
 
 # Create an object for each mouse
-DP_210202A = ssp.snapshot_mouse("DP_210202A", datapath)
-DP_210202B = ssp.snapshot_mouse("DP_210202B", datapath)
-DP_210202C = ssp.snapshot_mouse("DP_210202C", datapath)
-DP_210202D = ssp.snapshot_mouse("DP_210202D", datapath)
-DP_210203A = ssp.snapshot_mouse("DP_210203A", datapath)
-DP_210203B = ssp.snapshot_mouse("DP_210203B", datapath)
-DP_210308A = ssp.snapshot_mouse("DP_210308A", datapath)
-DP_210308B = ssp.snapshot_mouse("DP_210308B", datapath)
-DP_210308C = ssp.snapshot_mouse("DP_210308C", datapath)
-DP_210416A = ssp.snapshot_mouse("DP_210416A", datapath)
-DP_210416B = ssp.snapshot_mouse("DP_210416B", datapath)
-DP_210417 = ssp.snapshot_mouse("DP_210417", datapath)
+DP_210202A = ssv.snapshot_mouse("DP_210202A", datapath)
+DP_210202B = ssv.snapshot_mouse("DP_210202B", datapath)
+DP_210202C = ssv.snapshot_mouse("DP_210202C", datapath)
+DP_210202D = ssv.snapshot_mouse("DP_210202D", datapath)
+DP_210203A = ssv.snapshot_mouse("DP_210203A", datapath)
+DP_210203B = ssv.snapshot_mouse("DP_210203B", datapath)
+DP_210308A = ssv.snapshot_mouse("DP_210308A", datapath)
+DP_210308B = ssv.snapshot_mouse("DP_210308B", datapath)
+DP_210308C = ssv.snapshot_mouse("DP_210308C", datapath)
+DP_210416A = ssv.snapshot_mouse("DP_210416A", datapath)
+DP_210416B = ssv.snapshot_mouse("DP_210416B", datapath)
+DP_210417 = ssv.snapshot_mouse("DP_210417", datapath)
 
-
-# Create a concatenated dataframe for all mice loaded in:
-all_mice_df = ssp.concat_dfs([DP_210202A.mouse_df, DP_210202B.mouse_df, DP_210202C.mouse_df,
+# Create a concatenated dataframe for all mice loaded:
+all_mice_df = ssv.concat_dfs([DP_210202A.mouse_df, DP_210202B.mouse_df, DP_210202C.mouse_df,
                               DP_210202D.mouse_df, DP_210203A.mouse_df, DP_210203B.mouse_df,
                               DP_210308A.mouse_df, DP_210308B.mouse_df, DP_210308C.mouse_df,
                               DP_210416A.mouse_df, DP_210416B.mouse_df, DP_210417.mouse_df])
@@ -56,7 +59,6 @@ DP_210416A_green_prop = DP_210416A.green_only_prop
 DP_210416B_green_prop = DP_210416B.green_only_prop
 DP_210417_green_prop = DP_210417.green_only_prop
 
-
 DP_210202A_red_prop = DP_210202A.red_only_prop
 DP_210202B_red_prop = DP_210202B.red_only_prop
 DP_210202C_red_prop = DP_210202C.red_only_prop
@@ -70,8 +72,7 @@ DP_210416A_red_prop = DP_210416A.red_only_prop
 DP_210416B_red_prop = DP_210416B.red_only_prop
 DP_210417_red_prop = DP_210417.red_only_prop
 
-
-
+##### MAKE FIGURE 1 #####
 # Plot a bar graph with these proportions by mouse
 labels = ['DP_210202A \n {}'.format(int(DP_210202A.total_cells)), 'DP_210202B \n {}'.format(int(DP_210202B.total_cells)), 
           'DP_210202C \n {}'.format(int(DP_210202C.total_cells)), 'DP_210202D \n {}'.format(int(DP_210202D.total_cells)), 
@@ -110,8 +111,9 @@ ax.legend()
 
 fig.tight_layout()
 
-plt.show()
+plt.savefig(savefigpath + r'\fig1_' + date + '.png')
 
+##### MAKE FIGURE 1 WITHOUT ERROR BARS #####
 # Plot a bar graph with these proportions by mouse without error bars
 labels = ['DP_210202A', 'DP_210202B', 'DP_210202C', 'DP_210202D', 'DP_210203A', 'DP_210203B', 'DP_210308A',
           'DP_210308B', 'DP_210308C', 'DP_210416A', 'DP_210416B', 'DP_210417']
@@ -141,8 +143,9 @@ ax.legend()
 
 fig.tight_layout()
 
-plt.show()
+plt.savefig(savefigpath + r'\fig1_noerr_' + date + '.png')
 
+##### MAKE FIGURE 2 #####
 # Plot a bar graph with these proportions by condition or dosage; average across mice:
 labels = ['50mg/kg 2x', '100mg/kg 1x', '100mg/kg 2x', '200mg/kg 1x']
 gfp_props = [np.average([DP_210202A_green_prop, DP_210202B_green_prop, DP_210202C_green_prop]), 
@@ -186,13 +189,15 @@ ax.legend()
 
 fig.tight_layout()
 
-plt.show()
+plt.savefig(savefigpath + r'\fig2_' + date + '.png')
 
 print ('50x2 GFP-only avg + std: {} {}'.format(str(gfp_props[0]) + ',', gfp_err[0]))
 print ('100x1 GFP-only avg + std: {} {}'.format(str(gfp_props[1]) + ',', gfp_err[1]))
 print ('100x2 GFP-only avg + std: {} {}'.format(str(gfp_props[2]) + ',', gfp_err[2]))
 print ('200x1 GFP-only avg + std: {} {}'.format(str(gfp_props[3]) + ',', gfp_err[3]))
 
+
+##### MAKE FIGURE 3 #####
 # Plot a bar graph with these proportions by condition or dosage; use the whole cell population from the group:
 
 gfp_50x2 = np.sum([DP_210202A.green_cells, DP_210202B.green_cells, DP_210202C.green_cells]) / np.sum([DP_210202A.total_cells, DP_210202B.total_cells, DP_210202C.total_cells])
@@ -236,7 +241,7 @@ ax.legend()
 
 fig.tight_layout()
 
-plt.show()    
+plt.savefig(savefigpath + r'\fig3_' + date + '.png')
 
 print ('50x2 GFP-only avg + std: {} {}'.format(str(gfp_props[0]) + ',', gfp_err[0]))
 print ('100x1 GFP-only avg + std: {} {}'.format(str(gfp_props[1]) + ',', gfp_err[1]))
@@ -260,7 +265,7 @@ for label in (ax.get_xticklabels() + ax.get_yticklabels()):
 ax.set_title('Proportion single-labeled cells by total cells in slice')
 ax.set_xlabel('Total labeled cell count')
 
-
+##### MAKE FIGURE 5 #####
 # Plot a bar graph; group by number of injections:
 labels = ['One Day', 'Two Days']
 gfp_props = [np.average([DP_210202D_green_prop, DP_210203A_green_prop, DP_210203B_green_prop, DP_210416A_green_prop, DP_210416B_green_prop]),
@@ -295,11 +300,12 @@ ax.legend()
 
 fig.tight_layout()
 
-plt.show()
+plt.savefig(savefigpath + r'\fig5_' + date + '.png')
 
 print ('One-inj GFP-only avg + std: {} {}'.format(str(gfp_props[0]) + ',', gfp_err[0]))
 print ('Two-inj GFP-only avg + std: {} {}'.format(str(gfp_props[1]) + ',', gfp_err[1]))
 
+##### MAKE FIGURE 6 #####
 # Plot a bar graph; group by total dose (disregard number of injections):
 labels = ['100mg/kg', '200mg/kg']
 
@@ -341,13 +347,13 @@ ax.legend()
 
 fig.tight_layout()
 
-plt.show()
+plt.savefig(savefigpath + r'\fig6_' + date + '.png')
 
 print ('100mg/kg GFP-only avg + std: {} {}'.format(str(gfp_props[0]) + ',', gfp_err[0]))
 print ('200mg/kg GFP-only avg + std: {} {}'.format(str(gfp_props[1]) + ',', gfp_err[1]))
 
 
-
+##### MAKE FIGURE 7 #####
 # Plot a bar graph to show overall average across all mice:
 labels = ['All Mice, All Conditions']
 gfp_props = [np.average([DP_210202A_green_prop, DP_210202B_green_prop, DP_210202C_green_prop, 
@@ -386,8 +392,49 @@ ax.legend()
 
 fig.tight_layout()
 
-plt.show()
+plt.savefig(savefigpath + r'\fig7_' + date + '.png')
 print ('GFP-only avg + std: {} {}'.format(str(gfp_props[0]) + ',', gfp_err[0]))
+
+
+##### MAKE FIGURE 8 #####
+### Plot males with 200mg/kg total dose against females with 200mg/kg total dose:
+labels = ['males', 'females']
+
+gfp_props = [np.average([DP_210308A_green_prop, DP_210308B_green_prop, DP_210308C_green_prop]),
+             np.average([DP_210417_green_prop, DP_210416A_green_prop, DP_210416B_green_prop])]
+
+
+tom_props = [np.average([DP_210308A_red_prop, DP_210308B_red_prop, DP_210308C_red_prop]),
+             np.average([DP_210417_red_prop, DP_210416A_red_prop, DP_210416B_red_prop])]
+
+x = np.arange(len(labels))
+
+width = 0.35
+
+gfp_err = [np.std([DP_210308A_green_prop, DP_210308B_green_prop, DP_210308C_green_prop]),
+           np.std([DP_210417_green_prop, DP_210416A_green_prop, DP_210416B_green_prop])]
+
+tom_err = [np.std([DP_210308A_red_prop, DP_210308B_red_prop, DP_210308C_red_prop]),
+           np.std([DP_210417_red_prop, DP_210416A_red_prop, DP_210416B_red_prop])]
+
+fig, ax = plt.subplots()
+set1 =  ax.bar(x - width/2, gfp_props, width, yerr=gfp_err, label='GFP-only', color='limegreen')
+set2 = ax.bar(x + width/2, tom_props, width, yerr=tom_err, label='TOM-only', color='red')
+
+ax.set_ylabel('Proportion')
+ax.set_title('Proportion single-labeled cells in high-dose mice by sex')
+ax.set_xticks(x)
+ax.set_xticklabels(labels, fontdict ={'fontsize':8})
+ax.legend()
+
+fig.tight_layout()
+
+plt.savefig(savefigpath + r'\fig8_' + date + '.png')
+
+print ('Males high-dose GFP-only avg + std: {} {}'.format(str(gfp_props[0]) + ',', gfp_err[0]))
+print ('Females high-dose GFP-only avg + std: {} {}'.format(str(gfp_props[1]) + ',', gfp_err[1]))
+
+ 
 
 
 ##############################################################################################################
@@ -467,78 +514,3 @@ ax.set_title('Correlation of single-labeled cells in cortex vs thalamus')
 ax.set_xlabel('prop single-labeled in cortex')
 ax.set_ylabel('prop single-labeled in thalamus')
 
-
-
-### Plot males with 200mg/kg total dose against females with 200mg/kg total dose:
-labels = ['males', 'females']
-
-gfp_props = [np.average([DP_210308A_green_prop, DP_210308B_green_prop, DP_210308C_green_prop]),
-             np.average([DP_210417_green_prop, DP_210416A_green_prop, DP_210416B_green_prop])]
-
-
-tom_props = [np.average([DP_210308A_red_prop, DP_210308B_red_prop, DP_210308C_red_prop]),
-             np.average([DP_210417_red_prop, DP_210416A_red_prop, DP_210416B_red_prop])]
-
-x = np.arange(len(labels))
-
-width = 0.35
-
-gfp_err = [np.std([DP_210308A_green_prop, DP_210308B_green_prop, DP_210308C_green_prop]),
-           np.std([DP_210417_green_prop, DP_210416A_green_prop, DP_210416B_green_prop])]
-
-tom_err = [np.std([DP_210308A_red_prop, DP_210308B_red_prop, DP_210308C_red_prop]),
-           np.std([DP_210417_red_prop, DP_210416A_red_prop, DP_210416B_red_prop])]
-
-fig, ax = plt.subplots()
-set1 =  ax.bar(x - width/2, gfp_props, width, yerr=gfp_err, label='GFP-only', color='limegreen')
-set2 = ax.bar(x + width/2, tom_props, width, yerr=tom_err, label='TOM-only', color='red')
-
-ax.set_ylabel('Proportion')
-ax.set_title('Proportion single-labeled cells by sex')
-ax.set_xticks(x)
-ax.set_xticklabels(labels, fontdict ={'fontsize':8})
-ax.legend()
-
-fig.tight_layout()
-
-plt.show()
-
-print ('Males GFP-only avg + std: {} {}'.format(str(gfp_props[0]) + ',', gfp_err[0]))
-print ('Females GFP-only avg + std: {} {}'.format(str(gfp_props[1]) + ',', gfp_err[1]))
-
-### Plot males with 200mg/kg total dose against females with 200mg/kg total dose, without hippocampus mouse:
-labels = ['males', 'females']
-
-gfp_props = [np.average([DP_210308A_green_prop, DP_210308B_green_prop, DP_210308C_green_prop]),
-             np.average([DP_210417_green_prop, DP_210416A_green_prop])]
-
-
-tom_props = [np.average([DP_210308A_red_prop, DP_210308B_red_prop, DP_210308C_red_prop]),
-             np.average([DP_210417_red_prop, DP_210416A_red_prop])]
-
-x = np.arange(len(labels))
-
-width = 0.35
-
-gfp_err = [np.std([DP_210308A_green_prop, DP_210308B_green_prop, DP_210308C_green_prop]),
-           np.std([DP_210417_green_prop, DP_210416A_green_prop])]
-
-tom_err = [np.std([DP_210308A_red_prop, DP_210308B_red_prop, DP_210308C_red_prop]),
-           np.std([DP_210417_red_prop, DP_210416A_red_prop])]
-
-fig, ax = plt.subplots()
-set1 =  ax.bar(x - width/2, gfp_props, width, yerr=gfp_err, label='GFP-only', color='limegreen')
-set2 = ax.bar(x + width/2, tom_props, width, yerr=tom_err, label='TOM-only', color='red')
-
-ax.set_ylabel('Proportion')
-ax.set_title('Proportion single-labeled cells by sex \n exclude 416B')
-ax.set_xticks(x)
-ax.set_xticklabels(labels, fontdict ={'fontsize':8})
-ax.legend()
-
-fig.tight_layout()
-
-plt.show()
-
-print ('Males GFP-only avg + std: {} {}'.format(str(gfp_props[0]) + ',', gfp_err[0]))
-print ('Females GFP-only avg + std: {} {}'.format(str(gfp_props[1]) + ',', gfp_err[1]))
