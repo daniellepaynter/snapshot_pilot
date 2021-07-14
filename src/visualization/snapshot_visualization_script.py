@@ -2,8 +2,8 @@
 """
 Created on Wed Mar 24 16:25:27 2021
 
-Snapshot data processing script.
-Uses snapshot_dataproc_mod and the spreadsheet stored at \snapshot_pilot\SS_data_collector.xlsx,
+Snapshot data visualization script.
+Uses snapshot_visualization_mod and the spreadsheet stored at \snapshot_pilot\SS_data_collector.xlsx,
 which contains: list of mice/slides/slices obtained through snapshot pilot experiment, raw cell counts by slice, basic histology info,
 and the 4OHT dosage the mouse received.
 
@@ -154,12 +154,22 @@ gfp_props = [np.average([DP_210202A_green_prop, DP_210202B_green_prop, DP_210202
                          DP_210417_green_prop]),
              np.average([DP_210416A_green_prop, DP_210416B_green_prop])]
 
+gfp_scatter_props = [[DP_210202A_green_prop, DP_210202B_green_prop, DP_210202C_green_prop], 
+             [DP_210202D_green_prop, DP_210203A_green_prop, DP_210203B_green_prop],
+             [DP_210308A_green_prop, DP_210308B_green_prop, DP_210308C_green_prop, 
+              DP_210417_green_prop],[DP_210416A_green_prop, DP_210416B_green_prop]]
 
 tom_props = [np.average([DP_210202A_red_prop, DP_210202B_red_prop, DP_210202C_red_prop]), 
              np.average([DP_210202D_red_prop, DP_210203A_red_prop, DP_210203B_red_prop]),
              np.average([DP_210308A_red_prop, DP_210308B_red_prop, DP_210308C_red_prop,
                          DP_210417_red_prop]),
              np.average([DP_210416A_red_prop, DP_210416B_red_prop])]
+
+tom_scatter_props = [[DP_210202A_red_prop, DP_210202B_red_prop, DP_210202C_red_prop], 
+             [DP_210202D_red_prop, DP_210203A_red_prop, DP_210203B_red_prop],
+             [DP_210308A_red_prop, DP_210308B_red_prop, DP_210308C_red_prop,
+              DP_210417_red_prop],
+             [DP_210416A_red_prop, DP_210416B_red_prop]]
 
 x = np.arange(len(labels))
 width = 0.35
@@ -177,8 +187,17 @@ tom_err = [np.std([DP_210202A_red_prop, DP_210202B_red_prop, DP_210202C_red_prop
            np.std([DP_210416A_red_prop, DP_210416B_red_prop])]
 
 fig, ax = plt.subplots()
-set1 =  ax.bar(x - width/2, gfp_props, width, yerr=gfp_err, label='GFP-only', color='limegreen')
-set2 = ax.bar(x + width/2, tom_props, width, yerr=tom_err, label='TOM-only', color='red')
+
+for condition in range(4):
+    for i in range(len(gfp_scatter_props[condition])):
+    # distribute scatter randomly across whole width of bar
+        ax.scatter(x[condition] - width/2, gfp_scatter_props[condition][i], 
+                   zorder=10, color='black', s=14)
+        ax.scatter(x[condition] + width/2, tom_scatter_props[condition][i], 
+                   zorder=10, color='black', s=14)
+        
+set1 =  ax.bar(x - width/2, gfp_props, width, yerr=gfp_err, label='GFP-only', color='limegreen', zorder=0)
+set2 = ax.bar(x + width/2, tom_props, width, yerr=tom_err, label='TOM-only', color='red', zorder=0)
 
 ax.set_ylabel('Proportion')
 ax.set_xlabel('4OHT condition')
@@ -248,6 +267,8 @@ print ('100x1 GFP-only avg + std: {} {}'.format(str(gfp_props[1]) + ',', gfp_err
 print ('100x2 GFP-only avg + std: {} {}'.format(str(gfp_props[2]) + ',', gfp_err[2]))
 print ('200x1 GFP-only avg + std: {} {}'.format(str(gfp_props[3]) + ',', gfp_err[3]))
 
+
+##### MAKE FIGURE 4 #####
 # Plot correlation between total number of cells in a slice, and proportion single-labeled cells
 sub_df = all_mice_df[['total_cell_count','green_only_proportion','red_only_proportion']]
 filtered_df = sub_df[sub_df['green_only_proportion'].notna()]
@@ -264,6 +285,8 @@ for label in (ax.get_xticklabels() + ax.get_yticklabels()):
     label.set_fontsize(8)
 ax.set_title('Proportion single-labeled cells by total cells in slice')
 ax.set_xlabel('Total labeled cell count')
+plt.savefig(savefigpath + r'\fig4_' + date + '.png')
+
 
 ##### MAKE FIGURE 5 #####
 # Plot a bar graph; group by number of injections:
@@ -513,4 +536,5 @@ for label in (ax.get_xticklabels() + ax.get_yticklabels()):
 ax.set_title('Correlation of single-labeled cells in cortex vs thalamus')
 ax.set_xlabel('prop single-labeled in cortex')
 ax.set_ylabel('prop single-labeled in thalamus')
+
 
